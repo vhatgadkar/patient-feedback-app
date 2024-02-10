@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -36,7 +37,10 @@ func PatientInteraction(patientCaseDetails PatientCaseDetails) PatientFeedback {
 		log.Fatal("Error scanning user input", err)
 	}
 	if strings.ToLower(patientFeedback.ManageDiagosis) == "no" {
-		fmt.Println("")
+		patientFeedback.ManageDiagosis = "No"
+		fmt.Println("Oh, sorry for that. We will inform Dr " + patientCaseDetails.DoctorName.LastName + " to contact you.\n")
+	} else {
+		patientFeedback.ManageDiagosis = "Yes"
 	}
 	fmt.Println("We appreciate the feedback, one last question: how do you feel about being diagnosed with " +
 		patientCaseDetails.Dignosis + "?")
@@ -50,10 +54,17 @@ func PatientInteraction(patientCaseDetails PatientCaseDetails) PatientFeedback {
 		if text == "" {
 			break // Exit loop if an empty line is entered
 		}
-		feedback += text
+		feedback += "\n" + text
 	}
 	patientFeedback.Feeling = feedback
-	fmt.Println("Thanks again! Here’s what we heard:\n" + feedback)
+
+	fmt.Println("Thanks again! Here’s what we heard:")
+	fmt.Println("On a scale of 1-10, would you recommend Dr " + patientCaseDetails.DoctorName.LastName +
+		" to a friend or family member? \nYour answer: " + strconv.Itoa(int(patientFeedback.DoctorRecScore)))
+	fmt.Println("You were diagnosed with " + patientCaseDetails.Dignosis +
+		". Did Dr " + patientCaseDetails.DoctorName.LastName +
+		" explain how to manage this diagnosis in a way you could understand?\nYour answer: " + patientFeedback.ManageDiagosis)
+	fmt.Println("How do you feel about being diagnosed with " + patientCaseDetails.Dignosis + "?\nYour answer: " + patientFeedback.Feeling)
 
 	return patientFeedback
 }
