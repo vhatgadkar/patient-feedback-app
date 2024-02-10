@@ -15,6 +15,7 @@ type PatientFeedback struct {
 	Feeling        string
 }
 
+// Get patient feedback through interactive session
 func PatientInteraction(patientCaseDetails PatientCaseDetails) PatientFeedback {
 	var patientFeedback PatientFeedback
 	fmt.Println("Hi " + patientCaseDetails.PatientName.FirstName +
@@ -27,24 +28,34 @@ func PatientInteraction(patientCaseDetails PatientCaseDetails) PatientFeedback {
 	if err != nil {
 		log.Fatal("Error scanning user input", err)
 	}
-	fmt.Println("Thank you. You were diagnosed with " +
-		patientCaseDetails.Dignosis +
+	fmt.Println("Thank you. You were diagnosed with " + patientCaseDetails.Dignosis +
 		". Did Dr " + patientCaseDetails.DoctorName.LastName +
 		" explain how to manage this diagnosis in a way you could understand?")
 
-	_, err = fmt.Scan(&patientFeedback.ManageDiagosis)
-	if err != nil {
-		log.Fatal("Error scanning user input", err)
-	}
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	patientFeedback.ManageDiagosis = scanner.Text()
 	if strings.ToLower(patientFeedback.ManageDiagosis) == "no" {
-		patientFeedback.ManageDiagosis = "No"
 		fmt.Println("Oh, sorry for that. We will inform Dr " + patientCaseDetails.DoctorName.LastName + " to contact you.\n")
-	} else {
-		patientFeedback.ManageDiagosis = "Yes"
 	}
 	fmt.Println("We appreciate the feedback, one last question: how do you feel about being diagnosed with " +
 		patientCaseDetails.Dignosis + "?")
 
+	patientFeedback.Feeling = scanMultilineInput()
+
+	fmt.Println("Thanks again! Here’s what we heard:")
+	fmt.Println("On a scale of 1-10, would you recommend Dr " + patientCaseDetails.DoctorName.LastName +
+		" to a friend or family member? \nYour answer: " + strconv.Itoa(int(patientFeedback.DoctorRecScore)))
+	fmt.Println("You were diagnosed with " + patientCaseDetails.Dignosis +
+		". Did Dr " + patientCaseDetails.DoctorName.LastName +
+		" explain how to manage this diagnosis in a way you could understand?\nYour answer: " + patientFeedback.ManageDiagosis)
+	fmt.Println("How do you feel about being diagnosed with " + patientCaseDetails.Dignosis + "?\nYour answer: " + patientFeedback.Feeling)
+
+	return patientFeedback
+}
+
+// Get multiple lines of input from patient
+func scanMultilineInput() string {
 	// Create a new scanner to read from standard input
 	scanner := bufio.NewScanner(os.Stdin)
 	var feedback string
@@ -56,15 +67,5 @@ func PatientInteraction(patientCaseDetails PatientCaseDetails) PatientFeedback {
 		}
 		feedback += "\n" + text
 	}
-	patientFeedback.Feeling = feedback
-
-	fmt.Println("Thanks again! Here’s what we heard:")
-	fmt.Println("On a scale of 1-10, would you recommend Dr " + patientCaseDetails.DoctorName.LastName +
-		" to a friend or family member? \nYour answer: " + strconv.Itoa(int(patientFeedback.DoctorRecScore)))
-	fmt.Println("You were diagnosed with " + patientCaseDetails.Dignosis +
-		". Did Dr " + patientCaseDetails.DoctorName.LastName +
-		" explain how to manage this diagnosis in a way you could understand?\nYour answer: " + patientFeedback.ManageDiagosis)
-	fmt.Println("How do you feel about being diagnosed with " + patientCaseDetails.Dignosis + "?\nYour answer: " + patientFeedback.Feeling)
-
-	return patientFeedback
+	return feedback
 }
