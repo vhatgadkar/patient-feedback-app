@@ -74,7 +74,7 @@ type Meta struct {
 }
 
 // Read the sample JSON file and return EmrRecords
-func ReadEmrRecords() EmrRecords {
+func ReadEmrRecords() *EmrRecords {
 	// Open sample Json file
 	jsonFile, err := os.Open("patient-feedback-raw-data.json")
 	if err != nil {
@@ -87,7 +87,10 @@ func ReadEmrRecords() EmrRecords {
 	var emrRecords EmrRecords
 
 	// Read Json file, unmarshall the Json
-	byteValue, _ := io.ReadAll(jsonFile)
+	byteValue, err := io.ReadAll(jsonFile)
+	if err != nil {
+		log.Fatal("Error reading json: ", err)
+	}
 
 	// Unmarshall the byteArray that contains the Jsonfile's data
 	err = json.Unmarshal(byteValue, &emrRecords)
@@ -95,5 +98,5 @@ func ReadEmrRecords() EmrRecords {
 		log.Fatal("Error unmarshaling json: ", err)
 	}
 
-	return emrRecords
+	return &emrRecords
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"log"
 	"os"
 )
 
@@ -18,9 +18,12 @@ func main() {
 	// Save patient's feedback to a Json file well indented
 	file, err := json.MarshalIndent(patientFeedback, "", " ")
 	if err != nil {
-		fmt.Println("Couldn't save feedback to file")
+		log.Fatal("Couldn't marshall feedback to file:", err)
 	}
 
-	_ = os.WriteFile("saved-patient-feedback.json", file, 0644)
+	err = os.WriteFile("saved-patient-feedback.json:", file, 0644)
+	if err != nil {
+		log.Fatal("Couldn't save feedback to file:", err)
+	}
 
 }

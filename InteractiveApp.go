@@ -10,9 +10,10 @@ import (
 )
 
 type PatientFeedback struct {
-	DoctorRecScore int16
-	ManageDiagosis string
-	Feeling        string
+	DoctorRecScore        int16
+	ManageDiagosis        string
+	ManageDiagosisComment string
+	Feeling               string
 }
 
 // Get patient feedback through interactive session
@@ -31,7 +32,7 @@ func PatientInteraction(patientCaseDetails PatientCaseDetails) PatientFeedback {
 	return patientFeedback
 }
 
-// Get recommend score for Doctor
+// Get recommend score for Doctor, sending pointer because patientFeedback is modified
 func getRecommendScore(patientFeedback *PatientFeedback, patientCaseDetails *PatientCaseDetails) {
 	fmt.Println("Hi " + patientCaseDetails.PatientName.FirstName +
 		", on a scale of 1-10, would you recommend Dr " +
@@ -57,7 +58,7 @@ func getManageDiagnosisFeedback(patientFeedback *PatientFeedback, patientCaseDet
 	if strings.ToLower(patientFeedback.ManageDiagosis) == "no" {
 		fmt.Println("Will you like to add a comment?")
 		scanner.Scan()
-		patientFeedback.ManageDiagosis = patientFeedback.ManageDiagosis + " comment: " + scanner.Text()
+		patientFeedback.ManageDiagosisComment = scanner.Text()
 	}
 }
 
@@ -73,11 +74,15 @@ func getDiagnosisFeeling(patientFeedback *PatientFeedback, patientCaseDetails *P
 
 // Write summary of patient feedback
 func writeSummary(patientFeedback *PatientFeedback, patientCaseDetails *PatientCaseDetails) {
-	fmt.Println("Thanks again! Here’s what we heard:")
+	fmt.Println("Thanks again! Here’s what we heard:\n----------------------------------")
+
 	fmt.Println("On a scale of 1-10, would you recommend Dr " + patientCaseDetails.DoctorName.LastName +
 		" to a friend or family member? \nYour answer: " + strconv.Itoa(int(patientFeedback.DoctorRecScore)))
+
 	fmt.Println("You were diagnosed with " + patientCaseDetails.Dignosis +
 		". Did Dr " + patientCaseDetails.DoctorName.LastName +
-		" explain how to manage this diagnosis in a way you could understand?\nYour answer: " + patientFeedback.ManageDiagosis)
+		" explain how to manage this diagnosis in a way you could understand?\nYour answer: " +
+		patientFeedback.ManageDiagosis + "\nYour comment: " + patientFeedback.ManageDiagosisComment)
+
 	fmt.Println("How do you feel about being diagnosed with " + patientCaseDetails.Dignosis + "?\nYour answer: " + patientFeedback.Feeling)
 }
