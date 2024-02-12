@@ -82,7 +82,11 @@ func writeSummary(patientFeedback *PatientFeedback, patientCaseDetails *PatientC
 	fmt.Println("You were diagnosed with " + patientCaseDetails.Dignosis +
 		". Did Dr " + patientCaseDetails.DoctorName.LastName +
 		" explain how to manage this diagnosis in a way you could understand?\nYour answer: " +
-		patientFeedback.ManageDiagosis + "\nYour comment: " + patientFeedback.ManageDiagosisComment)
+		patientFeedback.ManageDiagosis)
+
+	if patientFeedback.ManageDiagosisComment != "" {
+		fmt.Println("Your comment: " + patientFeedback.ManageDiagosisComment)
+	}
 
 	fmt.Println("How do you feel about being diagnosed with " + patientCaseDetails.Dignosis + "?\nYour answer: " + patientFeedback.Feeling)
 }
