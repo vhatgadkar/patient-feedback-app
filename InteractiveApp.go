@@ -48,7 +48,7 @@ func getRecommendScore(patientFeedback *PatientFeedback, patientCaseDetails *Pat
 
 // Get explaination of manage diagnosis feedback
 func getManageDiagnosisFeedback(patientFeedback *PatientFeedback, patientCaseDetails *PatientCaseDetails) {
-	fmt.Println("Thank you. You were diagnosed with " + patientCaseDetails.Dignosis +
+	fmt.Println("\nThank you. You were diagnosed with " + patientCaseDetails.Dignosis +
 		". Did Dr " + patientCaseDetails.DoctorName.LastName +
 		" explain how to manage this diagnosis in a way you could understand?")
 
@@ -64,7 +64,7 @@ func getManageDiagnosisFeedback(patientFeedback *PatientFeedback, patientCaseDet
 
 // Get feeling about diagnosis
 func getDiagnosisFeeling(patientFeedback *PatientFeedback, patientCaseDetails *PatientCaseDetails) {
-	fmt.Println("We appreciate the feedback, one last question: how do you feel about being diagnosed with " +
+	fmt.Println("\nWe appreciate the feedback, one last question: how do you feel about being diagnosed with " +
 		patientCaseDetails.Dignosis + "?")
 
 	scanner := bufio.NewScanner(os.Stdin)
@@ -74,12 +74,12 @@ func getDiagnosisFeeling(patientFeedback *PatientFeedback, patientCaseDetails *P
 
 // Write summary of patient feedback
 func writeSummary(patientFeedback *PatientFeedback, patientCaseDetails *PatientCaseDetails) {
-	fmt.Println("Thanks again! Here’s what we heard:\n----------------------------------")
+	fmt.Println("\nThanks again! Here’s what we heard:\n----------------------------------")
 
-	fmt.Println("On a scale of 1-10, would you recommend Dr " + patientCaseDetails.DoctorName.LastName +
+	fmt.Println("\nOn a scale of 1-10, would you recommend Dr " + patientCaseDetails.DoctorName.LastName +
 		" to a friend or family member? \nYour answer: " + strconv.Itoa(int(patientFeedback.DoctorRecScore)))
 
-	fmt.Println("You were diagnosed with " + patientCaseDetails.Dignosis +
+	fmt.Println("\nYou were diagnosed with " + patientCaseDetails.Dignosis +
 		". Did Dr " + patientCaseDetails.DoctorName.LastName +
 		" explain how to manage this diagnosis in a way you could understand?\nYour answer: " +
 		patientFeedback.ManageDiagosis)
@@ -88,5 +88,5 @@ func writeSummary(patientFeedback *PatientFeedback, patientCaseDetails *PatientC
 		fmt.Println("Your comment: " + patientFeedback.ManageDiagosisComment)
 	}
 
-	fmt.Println("How do you feel about being diagnosed with " + patientCaseDetails.Dignosis + "?\nYour answer: " + patientFeedback.Feeling)
+	fmt.Println("\nHow do you feel about being diagnosed with " + patientCaseDetails.Dignosis + "?\nYour answer: " + patientFeedback.Feeling + "\n")
 }
