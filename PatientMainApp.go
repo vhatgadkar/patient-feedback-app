@@ -12,6 +12,7 @@ import (
 // Patient App Main program
 func main() {
 	router := gin.Default()
+	router.Use(corsMiddleware())
 	router.GET("/patientCaseDetails", getPatientCaseDetails)
 	router.POST("/patientFeedback", postPatientFeedback)
 	router.Run("0.0.0.0:8080")
@@ -37,4 +38,19 @@ func postPatientFeedback(c *gin.Context) {
 	}
 
 	_ = os.WriteFile("saved-patient-feedback.json", file, 0644)
+}
+
+func corsMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }
