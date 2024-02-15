@@ -14,7 +14,7 @@ func main() {
 	router := gin.Default()
 	router.GET("/patientCaseDetails", getPatientCaseDetails)
 	router.POST("/patientFeedback", postPatientFeedback)
-	router.Run("localhost:8080")
+	router.Run("0.0.0.0:8080")
 }
 func getPatientCaseDetails(c *gin.Context) {
 	// Read Json file with EMR data
