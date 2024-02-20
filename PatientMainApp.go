@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 
@@ -52,5 +53,18 @@ func corsMiddleware() gin.HandlerFunc {
 		}
 
 		c.Next()
+	}
+}
+
+// Save patient's feedback to a Json file well indented
+func savePatientFeedback(patientFeedback PatientFeedback) {
+	file, err := json.MarshalIndent(patientFeedback, "", " ")
+	if err != nil {
+		log.Fatal("Couldn't marshall feedback to file:", err)
+	}
+
+	err = os.WriteFile("saved-patient-feedback.json", file, 0644)
+	if err != nil {
+		log.Fatal("Couldn't save feedback to file:", err)
 	}
 }
