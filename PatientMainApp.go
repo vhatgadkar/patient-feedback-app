@@ -11,7 +11,10 @@ func main() {
 	// Read Json file with EMR data
 	emrRecords := ReadEmrRecords()
 	// Get Patient details like name, doctor's name and diagnosis
-	patientDetails := GetPatientCaseDetails(emrRecords)
+	patientInfo := GetPatientInfo(emrRecords)
+	doctorInfo := GetDoctorInfo(emrRecords)
+	diagnosisInfo := GetDiagnosisInfo(emrRecords)
+	patientDetails := GetPatientCaseDetails(patientInfo, doctorInfo, diagnosisInfo)
 	// Get patient feedback
 	patientFeedback := PatientInteraction(patientDetails)
 
