@@ -22,9 +22,13 @@ func getPatientCaseDetails(c *gin.Context) {
 	// Read Json file with EMR data
 	emrRecords := ReadEmrRecords()
 	// Get Patient details like name, doctor's name and diagnosis
-	patientDetails := GetPatientCaseDetails(emrRecords)
+	patientInfo := GetPatientInfo(emrRecords)
+	doctorInfo := GetDoctorInfo(emrRecords)
+	diagnosisInfo := GetDiagnosisInfo(emrRecords)
+	patientDetails := GetPatientCaseDetails(patientInfo, doctorInfo, diagnosisInfo)
 	c.IndentedJSON(http.StatusOK, patientDetails)
 }
+
 func postPatientFeedback(c *gin.Context) {
 	var patientFeedback PatientFeedback
 	// Get patient feedback
